@@ -1,53 +1,44 @@
 import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "./assets/vite.svg";
-import heroImg from "./assets/hero.png";
-import "./App.css";
-import Navbar from "./components/Navbar";
 
-// function Navbar(){
-//   return <h1>This is my Navbar</h1>
-// }
-
-function Hero() {
-  return <h1>This is my Hero</h1>;
+function ReactLearner() {
+  return <h2>Hello React Learner</h2>;
 }
 
-function Footer() {
-  return <h1>This is my Footer</h1>;
-}
-
-function Student({name,college}) {
-  return <h2>{name}-{college}</h2>;
-}
-function Card({ children }) {
-  return (
-    <div
-      style={{
-        border: "2px solid white",
-        padding: "10px",
-        margin: "10px",
-      }}
-    >
-      {children}
-    </div>
-  );
-}
 function App() {
+  const [count, setCount] = useState(0);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [showMessage, setShowMessage] = useState(false);
+
+  console.log("App Rendered");
+
+  function handleClick() {
+    setCount((prev) => prev + 1);
+    setCount((prev) => prev + 1);
+    setCount((prev) => prev + 1);
+  }
+
   return (
     <>
-      <Navbar />
-      <Footer />
-      <Hero />
+      {/* Counter Example */}
+      <h1>Count: {count}</h1>
 
-      <Student name="Aarav" college="VIT" />
-      <Student name="John" college="BIT" />
-      <Student name="Sarah" college="NIT" />
+      <button onClick={handleClick}>+3</button>
 
-      <Card>
-        <Student name="Aarav" college="VIT" />
-      </Card>
+      <hr />
 
+      {/* Conditional Rendering with Ternary */}
+      <h1>{isLoggedIn ? "Welcome" : "Please Login"}</h1>
+
+      <button onClick={() => setIsLoggedIn(!isLoggedIn)}>Toggle Login</button>
+
+      <hr />
+
+      {/* Conditional Rendering with && */}
+      {showMessage && <ReactLearner />}
+
+      <button onClick={() => setShowMessage(!showMessage)}>
+        Show / Hide Message
+      </button>
     </>
   );
 }
