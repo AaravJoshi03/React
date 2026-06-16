@@ -3,12 +3,15 @@
 ## Topics Covered
 
 - Controlled Components
+- Controlled vs Uncontrolled Inputs
 - Handling Form Inputs
 - Event Object
 - `e.target.value`
 - Managing Multiple Inputs
 - Object State
-- Spread Operator in React Forms
+- Spread Operator
+- Generic `handleChange()`
+- Computed Property Names
 
 ---
 
@@ -16,7 +19,7 @@
 
 A controlled component is an input element whose value is controlled by React state instead of the browser.
 
-Instead of the browser storing the current input value, React stores it inside a state variable.
+Instead of the browser storing the current input value, React stores it inside a React state variable.
 
 Example:
 
@@ -31,6 +34,7 @@ const [name, setName] = useState("");
 
 Flow:
 
+```
 User Types
       ↓
 onChange Event
@@ -42,6 +46,7 @@ setState()
 React State Updates
       ↓
 Input Value Updates
+```
 
 ---
 
@@ -54,11 +59,11 @@ Benefits:
 - Easy form submission
 - Easy to reset forms
 - Predictable UI
-- React always knows the current value
+- React always knows the latest input value
 
 ---
 
-# Understanding value
+# Understanding `value`
 
 ```jsx
 <input value={name} />
@@ -80,7 +85,7 @@ Aarav
 
 ---
 
-# Understanding onChange
+# Understanding `onChange`
 
 Whenever the user types,
 
@@ -121,7 +126,7 @@ Example:
 
 Since React controls the value,
 
-simply changing the state clears the textbox.
+changing the state automatically clears the textbox.
 
 ```jsx
 setName("");
@@ -131,7 +136,7 @@ setName("");
 
 # Controlled vs Uncontrolled Inputs
 
-Controlled:
+### Controlled
 
 ```jsx
 <input
@@ -140,27 +145,27 @@ Controlled:
 />
 ```
 
-React controls the value.
+React controls the input value using state.
 
 ---
 
-Uncontrolled:
+### Uncontrolled
 
 ```jsx
 <input />
 ```
 
-Browser controls the value.
+The browser manages the input value internally.
 
-React does not know what the user typed.
+React does not control or automatically track the value through state.
 
 ---
 
 # Managing Multiple Inputs
 
-Instead of creating separate state variables,
+Instead of creating multiple state variables,
 
-Bad:
+❌ Bad
 
 ```jsx
 const [name, setName] = useState("");
@@ -168,9 +173,7 @@ const [email, setEmail] = useState("");
 const [college, setCollege] = useState("");
 ```
 
-We group related data.
-
-Better:
+✅ Better
 
 ```jsx
 const [formData, setFormData] = useState({
@@ -183,15 +186,16 @@ const [formData, setFormData] = useState({
 Benefits:
 
 - Cleaner code
-- Easier to manage
-- Easier to send to APIs
-- Easier to scale
+- Easier management
+- Easier API submission
+- Better scalability
+- Related data stays together
 
 ---
 
 # Updating Object State
 
-Suppose current state is
+Suppose the current state is
 
 ```jsx
 {
@@ -209,7 +213,7 @@ setFormData({
 });
 ```
 
-React replaces the whole object.
+React replaces the entire object.
 
 Result:
 
@@ -219,7 +223,7 @@ Result:
 }
 ```
 
-email and college are lost.
+The `email` and `college` properties are lost.
 
 ---
 
@@ -234,9 +238,7 @@ setFormData({
 });
 ```
 
-Spread operator creates a shallow copy of the existing object.
-
-Then only the specified property is updated.
+The spread operator creates a **shallow copy** of the existing object and preserves all existing properties before updating only the specified property.
 
 Result:
 
@@ -271,11 +273,11 @@ Pattern:
 ```jsx
 value={formData.FIELD}
 
-onChange={(e)=>
-setFormData({
-...formData,
-FIELD:e.target.value
-})
+onChange={(e) =>
+  setFormData({
+    ...formData,
+    FIELD: e.target.value,
+  })
 }
 ```
 
@@ -283,11 +285,9 @@ This same pattern is repeated for every input field.
 
 ---
 
-# Generic handleChange Function
+# Generic `handleChange()` Function
 
-Instead of writing separate `onChange` handlers for every input field, we can create a single reusable function.
-
-Example:
+Instead of writing separate `onChange` handlers for every input field, we can create one reusable function.
 
 ```jsx
 function handleChange(e) {
@@ -312,7 +312,7 @@ Example:
 />
 ```
 
-When typing inside the Email field:
+When typing:
 
 ```
 e.target.name  → "email"
@@ -325,13 +325,13 @@ React updates:
 email: "abc@gmail.com"
 ```
 
-without needing separate functions.
+without requiring a separate function.
 
 ---
 
 # Computed Property Names
 
-Normally:
+Normally,
 
 ```jsx
 {
@@ -357,7 +357,7 @@ Example:
 const name = "email";
 ```
 
-Then:
+Then,
 
 ```jsx
 {
@@ -365,7 +365,7 @@ Then:
 }
 ```
 
-becomes:
+becomes
 
 ```jsx
 {
@@ -379,7 +379,7 @@ It allows a single function to update different properties dynamically.
 
 ---
 
-## Final Form Pattern
+# Final Form Pattern
 
 ```jsx
 const [formData, setFormData] = useState({
@@ -398,7 +398,7 @@ function handleChange(e) {
 }
 ```
 
-This is one of the most commonly used patterns for handling forms in React.
+This is one of the most common patterns used in React applications.
 
 ---
 
@@ -416,7 +416,7 @@ Example:
 
 As the user types,
 
-React automatically updates the UI.
+React automatically re-renders the UI with the latest values.
 
 ---
 
@@ -426,10 +426,11 @@ React automatically updates the UI.
 - `value` decides what appears inside the input.
 - `onChange` runs whenever the user types.
 - `e.target.value` gives the current input value.
-- Group related form fields into one object.
+- Group related form fields into a single object.
 - `useState` replaces objects instead of merging them.
-- Use the spread operator to preserve existing fields.
-- React forms commonly store data inside an object.
+- Use the spread operator to preserve existing properties.
+- Use computed property names (`[name]`) to update object properties dynamically.
+- One `handleChange()` function can manage multiple input fields.
 
 ---
 
@@ -458,7 +459,7 @@ The current value entered inside the input field.
 
 ### 4. Why is the spread operator used?
 
-To copy the existing object and update only the required property without losing the remaining fields.
+To copy the existing object and update only the required property while preserving the remaining properties.
 
 ---
 
@@ -470,9 +471,7 @@ setFormData({
 });
 ```
 
-The previous object is replaced.
-
-Remaining properties are lost.
+The previous object is replaced, causing the other properties to be lost.
 
 ---
 
@@ -480,33 +479,80 @@ Remaining properties are lost.
 
 - Better organization
 - Easier management
-- Easier API submission
 - Cleaner code
+- Easier API submission
+- Better scalability
 
 ---
 
 ### 7. What is the difference between controlled and uncontrolled components?
 
-Controlled → React controls the value.
+Controlled → React controls the input value through state.
 
-Uncontrolled → Browser controls the value.
+Uncontrolled → The browser manages the input value internally.
 
 ---
 
-# Revision
+### 8. Why do we use `[name]` instead of `name`?
 
-✔ Controlled Components
+`name` creates a property literally called `name`.
 
-✔ value
+`[name]` tells JavaScript to evaluate the variable first and use its value as the property name.
 
-✔ onChange
+Example:
 
-✔ Event Object
+```jsx
+const name = "email";
 
-✔ e.target.value
+{
+  [name]: "abc@gmail.com"
+}
+```
 
-✔ Object State
+becomes
 
-✔ Spread Operator
+```jsx
+{
+  email: "abc@gmail.com"
+}
+```
 
-✔ Live Form Preview
+This allows one `handleChange()` function to update different fields dynamically.
+
+---
+
+# Common Mistakes
+
+❌ Forgetting the `name` attribute while using `handleChange()`.
+
+❌ Replacing the entire object instead of using the spread operator.
+
+❌ Writing
+
+```jsx
+name: value
+```
+
+instead of
+
+```jsx
+[name]: value
+```
+
+❌ Mutating state directly instead of using `setFormData()`.
+
+---
+
+# Revision Checklist
+
+- [x] Controlled Components
+- [x] Controlled vs Uncontrolled Inputs
+- [x] `value`
+- [x] `onChange`
+- [x] Event Object
+- [x] `e.target.value`
+- [x] Object State
+- [x] Spread Operator
+- [x] Generic `handleChange()`
+- [x] Computed Property Names
+- [x] Live Form Preview
