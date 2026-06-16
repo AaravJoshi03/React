@@ -1,44 +1,88 @@
 import { useState } from "react";
-
-function ReactLearner() {
-  return <h2>Hello React Learner</h2>;
-}
+import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [showMessage, setShowMessage] = useState(false);
-
-  console.log("App Rendered");
-
-  function handleClick() {
-    setCount((prev) => prev + 1);
-    setCount((prev) => prev + 1);
-    setCount((prev) => prev + 1);
-  }
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    college: "",
+  });
 
   return (
     <>
-      {/* Counter Example */}
-      <h1>Count: {count}</h1>
-
-      <button onClick={handleClick}>+3</button>
+      <h1>React Forms - Controlled Components</h1>
 
       <hr />
 
-      {/* Conditional Rendering with Ternary */}
-      <h1>{isLoggedIn ? "Welcome" : "Please Login"}</h1>
+      <h2>Student Registration Form</h2>
 
-      <button onClick={() => setIsLoggedIn(!isLoggedIn)}>Toggle Login</button>
+      <div>
+        <label>Name</label>
+        <br />
+        <input
+          type="text"
+          placeholder="Enter your name"
+          value={formData.name}
+          onChange={(e) =>
+            setFormData({
+              ...formData,
+              name: e.target.value,
+            })
+          }
+        />
+      </div>
+
+      <br />
+
+      <div>
+        <label>Email</label>
+        <br />
+        <input
+          type="email"
+          placeholder="Enter your email"
+          value={formData.email}
+          onChange={(e) =>
+            setFormData({
+              ...formData,
+              email: e.target.value,
+            })
+          }
+        />
+      </div>
+
+      <br />
+
+      <div>
+        <label>College</label>
+        <br />
+        <input
+          type="text"
+          placeholder="Enter your college"
+          value={formData.college}
+          onChange={(e) =>
+            setFormData({
+              ...formData,
+              college: e.target.value,
+            })
+          }
+        />
+      </div>
 
       <hr />
 
-      {/* Conditional Rendering with && */}
-      {showMessage && <ReactLearner />}
+      <h2>Live Preview</h2>
 
-      <button onClick={() => setShowMessage(!showMessage)}>
-        Show / Hide Message
-      </button>
+      <p>
+        <strong>Name:</strong> {formData.name}
+      </p>
+
+      <p>
+        <strong>Email:</strong> {formData.email}
+      </p>
+
+      <p>
+        <strong>College:</strong> {formData.college}
+      </p>
     </>
   );
 }
