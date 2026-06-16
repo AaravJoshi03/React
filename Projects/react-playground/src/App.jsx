@@ -1,12 +1,20 @@
 import { useState } from "react";
 import "./App.css";
 
+
 function App() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     college: "",
   });
+
+  function handleChange(e) {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  }
 
   return (
     <>
@@ -20,15 +28,11 @@ function App() {
         <label>Name</label>
         <br />
         <input
+        name = "name"
           type="text"
           placeholder="Enter your name"
           value={formData.name}
-          onChange={(e) =>
-            setFormData({
-              ...formData,
-              name: e.target.value,
-            })
-          }
+          onChange={handleChange}
         />
       </div>
 
@@ -38,15 +42,11 @@ function App() {
         <label>Email</label>
         <br />
         <input
+        name = "email"
           type="email"
           placeholder="Enter your email"
           value={formData.email}
-          onChange={(e) =>
-            setFormData({
-              ...formData,
-              email: e.target.value,
-            })
-          }
+          onChange={handleChange}
         />
       </div>
 
@@ -56,15 +56,11 @@ function App() {
         <label>College</label>
         <br />
         <input
+        name = "college"
           type="text"
           placeholder="Enter your college"
           value={formData.college}
-          onChange={(e) =>
-            setFormData({
-              ...formData,
-              college: e.target.value,
-            })
-          }
+          onChange={handleChange}
         />
       </div>
 

@@ -283,6 +283,125 @@ This same pattern is repeated for every input field.
 
 ---
 
+# Generic handleChange Function
+
+Instead of writing separate `onChange` handlers for every input field, we can create a single reusable function.
+
+Example:
+
+```jsx
+function handleChange(e) {
+  const { name, value } = e.target;
+
+  setFormData({
+    ...formData,
+    [name]: value,
+  });
+}
+```
+
+Each input provides its own `name` attribute.
+
+Example:
+
+```jsx
+<input
+  name="email"
+  value={formData.email}
+  onChange={handleChange}
+/>
+```
+
+When typing inside the Email field:
+
+```
+e.target.name  → "email"
+e.target.value → "abc@gmail.com"
+```
+
+React updates:
+
+```jsx
+email: "abc@gmail.com"
+```
+
+without needing separate functions.
+
+---
+
+# Computed Property Names
+
+Normally:
+
+```jsx
+{
+  name: "Aarav"
+}
+```
+
+creates a property literally named `name`.
+
+Using square brackets:
+
+```jsx
+{
+  [name]: value
+}
+```
+
+JavaScript first evaluates the variable.
+
+Example:
+
+```jsx
+const name = "email";
+```
+
+Then:
+
+```jsx
+{
+  [name]: "abc@gmail.com"
+}
+```
+
+becomes:
+
+```jsx
+{
+  email: "abc@gmail.com"
+}
+```
+
+This feature is called **Computed Property Names**.
+
+It allows a single function to update different properties dynamically.
+
+---
+
+## Final Form Pattern
+
+```jsx
+const [formData, setFormData] = useState({
+  name: "",
+  email: "",
+  college: "",
+});
+
+function handleChange(e) {
+  const { name, value } = e.target;
+
+  setFormData({
+    ...formData,
+    [name]: value,
+  });
+}
+```
+
+This is one of the most commonly used patterns for handling forms in React.
+
+---
+
 # Live Preview
 
 React state can be displayed anywhere.
